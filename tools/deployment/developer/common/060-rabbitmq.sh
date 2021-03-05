@@ -14,6 +14,9 @@
 
 set -xe
 
+cd "${OSH_INFRA_PATH}"
+(cd rabbitmq && helm dependency update)
+
 #NOTE: Get the over-rides to use
 export HELM_CHART_ROOT_PATH="${HELM_CHART_ROOT_PATH:="${OSH_INFRA_PATH:="../openstack-helm-infra"}"}"
 : ${OSH_EXTRA_HELM_ARGS_RABBITMQ:="$(./tools/deployment/common/get-values-overrides.sh rabbitmq)"}
@@ -25,6 +28,7 @@ make -C ${HELM_CHART_ROOT_PATH} rabbitmq
 : ${OSH_EXTRA_HELM_ARGS:=""}
 helm upgrade --install rabbitmq ${HELM_CHART_ROOT_PATH}/rabbitmq \
     --namespace=openstack \
+    --create-namespace \
     ${OSH_EXTRA_HELM_ARGS} \
     ${OSH_EXTRA_HELM_ARGS_RABBITMQ}
 

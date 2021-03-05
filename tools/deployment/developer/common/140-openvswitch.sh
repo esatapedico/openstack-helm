@@ -13,6 +13,9 @@
 #    under the License.
 set -xe
 
+cd "${OSH_INFRA_PATH}"
+(cd openvswitch && helm dependency update)
+
 #NOTE: Get the over-rides to use
 export HELM_CHART_ROOT_PATH="${HELM_CHART_ROOT_PATH:="${OSH_INFRA_PATH:="../openstack-helm-infra"}"}"
 : ${OSH_EXTRA_HELM_ARGS_OPENVSWITCH:="$(./tools/deployment/common/get-values-overrides.sh openvswitch)"}
@@ -24,6 +27,7 @@ make -C ${HELM_CHART_ROOT_PATH} openvswitch
 : ${OSH_EXTRA_HELM_ARGS:=""}
 helm upgrade --install openvswitch ${HELM_CHART_ROOT_PATH}/openvswitch \
   --namespace=openstack \
+  --create-namespace \
   ${OSH_EXTRA_HELM_ARGS} \
   ${OSH_EXTRA_HELM_ARGS_OPENVSWITCH}
 

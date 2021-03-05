@@ -14,6 +14,9 @@
 
 set -xe
 
+cd "${OSH_INFRA_PATH}"
+(cd memcached && helm dependency update)
+
 #NOTE: Get the over-rides to use
 export HELM_CHART_ROOT_PATH="${HELM_CHART_ROOT_PATH:="${OSH_INFRA_PATH:="../openstack-helm-infra"}"}"
 : ${OSH_EXTRA_HELM_ARGS_MEMCACHED:="$(./tools/deployment/common/get-values-overrides.sh memcached)"}
@@ -25,6 +28,7 @@ make -C ${HELM_CHART_ROOT_PATH} memcached
 : ${OSH_EXTRA_HELM_ARGS:=""}
 helm upgrade --install memcached ${HELM_CHART_ROOT_PATH}/memcached \
     --namespace=openstack \
+    --create-namespace \
     ${OSH_EXTRA_HELM_ARGS} \
     ${OSH_EXTRA_HELM_ARGS_MEMCACHED}
 

@@ -14,6 +14,9 @@
 
 set -xe
 
+cd "${HELM_CHART_ROOT_PATH}"
+(cd mariadb && helm depdendency update)
+
 #NOTE: Get the over-rides to use
 export HELM_CHART_ROOT_PATH="${HELM_CHART_ROOT_PATH:="${OSH_INFRA_PATH:="../openstack-helm-infra"}"}"
 : ${OSH_EXTRA_HELM_ARGS_MARIADB:="$(./tools/deployment/common/get-values-overrides.sh mariadb)"}
@@ -23,8 +26,9 @@ make -C ${HELM_CHART_ROOT_PATH} mariadb
 
 #NOTE: Deploy command
 : ${OSH_EXTRA_HELM_ARGS:=""}
-helm upgrade --install mariadb ${HELM_CHART_ROOT_PATH}/mariadb \
+helm upgrade --install mariadb mariadb \
     --namespace=openstack \
+    --create-namespace \
     --set pod.replicas.server=1 \
     ${OSH_EXTRA_HELM_ARGS} \
     ${OSH_EXTRA_HELM_ARGS_MARIADB}

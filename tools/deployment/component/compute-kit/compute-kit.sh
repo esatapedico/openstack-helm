@@ -13,6 +13,8 @@
 #    under the License.
 set -xe
 
+cd "${OSH_INFRA_PATH}"
+
 : ${RUN_HELM_TESTS:="yes"}
 
 export OS_CLOUD=openstack_helm
@@ -51,11 +53,13 @@ if [[ "${DEPLOY_SEPARATE_PLACEMENT}" == "yes" ]]; then
     # Get overrides
     : ${OSH_EXTRA_HELM_ARGS_PLACEMENT:="$(./tools/deployment/common/get-values-overrides.sh placement)"}
 
+    (cd placement && helm dependency update)
+
     # Lint and package
     make placement
 
     # Deploy
-    helm upgrade --install placement ./placement --namespace=openstack \
+    helm upgrade --install placement ./placement --namespace=openstack --create-namespace \
         ${OSH_EXTRA_HELM_ARGS:=} ${OSH_EXTRA_HELM_ARGS_PLACEMENT}
 fi
 
@@ -76,10 +80,12 @@ make nova
 
 #NOTE: Deploy nova
 : ${OSH_EXTRA_HELM_ARGS:=""}
+(cd nova && helm dependency update)
 if [ "x$(systemd-detect-virt)" == "xnone" ]; then
   echo 'OSH is not being deployed in virtualized environment'
   helm upgrade --install nova ./nova \
       --namespace=openstack \
+      --create-namespace \
       --set bootstrap.wait_for_computes.enabled=true \
       --set conf.ceph.enabled=${CEPH_ENABLED} \
       ${OSH_EXTRA_HELM_ARGS:=} \
@@ -88,6 +94,7 @@ else
   echo 'OSH is being deployed in virtualized environment, using qemu for nova'
   helm upgrade --install nova ./nova \
       --namespace=openstack \
+      --create-namespace \
       --set bootstrap.wait_for_computes.enabled=true \
       --set conf.ceph.enabled=${CEPH_ENABLED} \
       --set conf.nova.libvirt.virt_type=qemu \
@@ -127,8 +134,12 @@ conf:
       linux_bridge:
         bridge_mappings: public:br-ex
 EOF
+
+(cd neutron && helm dependency update)
+
 helm upgrade --install neutron ./neutron \
     --namespace=openstack \
+    --create-namespace \
     --values=/tmp/neutron.yaml \
     ${OSH_EXTRA_HELM_ARGS:=} \
     ${OSH_VALUES_OVERRIDES_HELM_ARGS:=} \

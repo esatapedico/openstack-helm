@@ -14,6 +14,9 @@
 
 set -xe
 
+cd "${OSH_INFRA_PATH}"
+(cd horizon && helm dependency update)
+
 #NOTE: Get the over-rides to use
 : ${OSH_EXTRA_HELM_ARGS_HORIZON:="$(./tools/deployment/common/get-values-overrides.sh horizon)"}
 
@@ -24,6 +27,7 @@ make horizon
 : ${OSH_EXTRA_HELM_ARGS:=""}
 helm upgrade --install horizon ./horizon \
     --namespace=openstack \
+    --create-namespace \
     --set network.node_port.enabled=true \
     --set network.node_port.port=31000 \
     ${OSH_EXTRA_HELM_ARGS} \

@@ -14,6 +14,9 @@
 
 set -xe
 
+cd "${OSH_INFRA_PATH}"
+(cd keystone && helm dependency update)
+
 #NOTE: Lint and package chart
 make keystone
 
@@ -24,6 +27,7 @@ make keystone
 : ${OSH_EXTRA_HELM_ARGS:=""}
 helm upgrade --install keystone ./keystone \
     --namespace=openstack \
+    --create-namespace \
     ${OSH_EXTRA_HELM_ARGS} \
     ${OSH_EXTRA_HELM_ARGS_KEYSTONE}
 

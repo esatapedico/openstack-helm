@@ -13,6 +13,8 @@
 #    under the License.
 set -xe
 
+cd "${OSH_INFRA_PATH}"
+
 export RUN_HELM_TESTS="no"
 # Deploy nova and neutron charts
 ./tools/deployment/component/compute-kit/compute-kit.sh

@@ -14,6 +14,9 @@
 
 set -xe
 
+cd "${OSH_INFRA_PATH}"
+(cd glance && helm dependency update)
+
 #NOTE: Lint and package chart
 make glance
 
@@ -45,6 +48,7 @@ EOF
 fi
 helm upgrade --install glance ./glance \
   --namespace=openstack \
+  --create-namespace \
   --values=/tmp/glance.yaml \
   ${OSH_EXTRA_HELM_ARGS} \
   ${OSH_EXTRA_HELM_ARGS_GLANCE}

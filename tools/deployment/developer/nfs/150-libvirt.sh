@@ -13,6 +13,9 @@
 #    under the License.
 set -xe
 
+cd "${OSH_INFRA_PATH}"
+(cd libvirt && helm dependency update)
+
 #NOTE: Get the over-rides to use
 export HELM_CHART_ROOT_PATH="${HELM_CHART_ROOT_PATH:="${OSH_INFRA_PATH:="../openstack-helm-infra"}"}"
 : ${OSH_EXTRA_HELM_ARGS_LIBVIRT:="$(./tools/deployment/common/get-values-overrides.sh libvirt)"}
@@ -24,6 +27,7 @@ make -C ${HELM_CHART_ROOT_PATH} libvirt
 : ${OSH_EXTRA_HELM_ARGS:=""}
 helm upgrade --install libvirt ${HELM_CHART_ROOT_PATH}/libvirt \
   --namespace=openstack \
+  --create-namespace \
   --set conf.ceph.enabled=false \
   ${OSH_EXTRA_HELM_ARGS} \
   ${OSH_EXTRA_HELM_ARGS_LIBVIRT}

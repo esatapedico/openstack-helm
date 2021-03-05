@@ -13,6 +13,9 @@
 #    under the License.
 set -xe
 
+cd "${OSH_INFRA_PATH}"
+(cd heat && helm dependency update)
+
 #NOTE: Get the over-rides to use
 : ${OSH_EXTRA_HELM_ARGS_HEAT:="$(./tools/deployment/common/get-values-overrides.sh heat)"}
 
@@ -23,6 +26,7 @@ make heat
 : ${OSH_EXTRA_HELM_ARGS:=""}
 helm upgrade --install heat ./heat \
   --namespace=openstack \
+  --create-namespace \
   ${OSH_EXTRA_HELM_ARGS} \
   ${OSH_EXTRA_HELM_ARGS_HEAT}
 
