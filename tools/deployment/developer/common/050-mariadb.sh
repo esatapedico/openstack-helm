@@ -14,7 +14,7 @@
 
 set -xe
 
-cd "${HELM_CHART_ROOT_PATH}"
+cd "${OSH_INFRA_PATH}"
 (cd mariadb && helm depdendency update)
 
 #NOTE: Get the over-rides to use
