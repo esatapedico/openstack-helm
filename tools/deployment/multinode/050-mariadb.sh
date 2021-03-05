@@ -42,4 +42,4 @@ helm upgrade --install mariadb ${HELM_CHART_ROOT_PATH}/mariadb \
 ./tools/deployment/common/wait-for-pods.sh openstack
 
 #NOTE: Validate Deployment info
-helm status mariadb
+helm status mariadb --namespace=openstack

@@ -57,7 +57,7 @@ helm upgrade --install glance ./glance \
 ./tools/deployment/common/wait-for-pods.sh openstack
 
 #NOTE: Validate Deployment info
-helm status glance
+helm status glance --namespace=openstack
 export OS_CLOUD=openstack_helm
 openstack service list
 sleep 30 #NOTE(portdirect): Wait for ingress controller to update rules and restart Nginx

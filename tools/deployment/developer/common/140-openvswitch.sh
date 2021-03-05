@@ -35,4 +35,4 @@ helm upgrade --install openvswitch ${HELM_CHART_ROOT_PATH}/openvswitch \
 ./tools/deployment/common/wait-for-pods.sh openstack
 
 #NOTE: Validate Deployment info
-helm status openvswitch
+helm status openvswitch --namespace=openstack

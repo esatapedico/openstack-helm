@@ -36,4 +36,4 @@ helm upgrade --install libvirt ${HELM_CHART_ROOT_PATH}/libvirt \
 # on the neutron agents being up.
 
 #NOTE: Validate Deployment info
-helm status libvirt
+helm status libvirt --namespace=openstack

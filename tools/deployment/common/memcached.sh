@@ -36,4 +36,4 @@ helm upgrade --install memcached ${HELM_CHART_ROOT_PATH}/memcached \
 ./tools/deployment/common/wait-for-pods.sh openstack
 
 #NOTE: Validate Deployment info
-helm status memcached
+helm status memcached --namespace=openstack

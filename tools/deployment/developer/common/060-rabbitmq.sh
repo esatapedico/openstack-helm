@@ -36,4 +36,4 @@ helm upgrade --install rabbitmq ${HELM_CHART_ROOT_PATH}/rabbitmq \
 ./tools/deployment/common/wait-for-pods.sh openstack
 
 #NOTE: Validate Deployment info
-helm status rabbitmq
+helm status rabbitmq --namespace=openstack
