@@ -15,7 +15,7 @@
 set -xe
 
 cd "${OSH_INFRA_PATH}"
-(cd mariadb && helm depdendency update)
+(cd mariadb && helm dependency update)
 
 #NOTE: Get the over-rides to use
 export HELM_CHART_ROOT_PATH="${HELM_CHART_ROOT_PATH:="${OSH_INFRA_PATH:="../openstack-helm-infra"}"}"
