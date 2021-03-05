@@ -14,7 +14,7 @@
 
 set -xe
 
-cd "${OSH_INFRA_PATH}"
+cd "${OSH_PATH}"
 (cd keystone && helm dependency update)
 
 #NOTE: Lint and package chart

@@ -14,7 +14,7 @@
 
 set -xe
 
-cd "${OSH_INFRA_PATH}"
+cd "${OSH_PATH}"
 (cd horizon && helm dependency update)
 
 #NOTE: Get the over-rides to use

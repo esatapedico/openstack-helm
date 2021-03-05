@@ -13,7 +13,7 @@
 #    under the License.
 set -xe
 
-cd "${OSH_INFRA_PATH}"
+cd "${OSH_PATH}"
 
 export RUN_HELM_TESTS="no"
 # Deploy nova and neutron charts

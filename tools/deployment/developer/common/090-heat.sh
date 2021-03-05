@@ -13,7 +13,7 @@
 #    under the License.
 set -xe
 
-cd "${OSH_INFRA_PATH}"
+cd "${OSH_PATH}"
 (cd heat && helm dependency update)
 
 #NOTE: Get the over-rides to use
