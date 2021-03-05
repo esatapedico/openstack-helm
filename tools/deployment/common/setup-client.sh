@@ -14,9 +14,7 @@
 
 set -xe
 
-sudo -H -E pip3 install \
-  -c${UPPER_CONSTRAINTS_FILE:=https://releases.openstack.org/constraints/upper/${OPENSTACK_RELEASE:-stein}} \
-  cmd2 python-openstackclient python-heatclient --ignore-installed
+sudo apt-get update && sudo apt-get -y install python3-openstackclient python3-heatclient
 
 sudo -H mkdir -p /etc/openstack
 sudo -H chown -R $(id -un): /etc/openstack
@@ -52,4 +50,4 @@ EOF
 fi
 
 #NOTE: Build helm-toolkit, most charts depend on helm-toolkit
-make helm-toolkit
+#make helm-toolkit
