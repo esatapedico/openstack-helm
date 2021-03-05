@@ -16,8 +16,10 @@ set -xe
 
 #NOTE: Deploy command
 : ${OSH_INFRA_PATH:="../openstack-helm-infra"}
+(cd ${OSH_INFRA_PATH}/nfs-provisioner && helm dependency update)
 helm upgrade --install nfs-provisioner ${OSH_INFRA_PATH}/nfs-provisioner \
     --namespace=nfs \
+    --create-namespace \
     --set storageclass.name=general \
     ${OSH_EXTRA_HELM_ARGS_NFS_PROVISIONER}
 
